@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ViewModelMain(app: Application): AndroidViewModel(app) {
-    private val mRepository = CountryRepository(DbCountry.getInstance(getApplication(), viewModelScope))
+    private val mRepository = CountryRepository(DbCountry.getInstance(getApplication()))
     val items: LiveData<List<Country>>
         get() = this.mRepository.countries
 

@@ -21,7 +21,7 @@ abstract class DbCountry: RoomDatabase() {
         @Volatile
         private var INSTANCE: DbCountry? = null
 
-        fun  getInstance(context: Context, coroutineScope: CoroutineScope): DbCountry {
+        fun  getInstance(context: Context): DbCountry {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

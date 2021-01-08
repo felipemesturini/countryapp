@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.felipe.labs.countryapi.viewmodel.ViewModelMain
 import com.felipe.labs.countryapi.web.CountryResponse
 import com.felipe.labs.countryapi.ws.CountryApi
@@ -19,44 +21,30 @@ import retrofit2.Response
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
+    private lateinit var mRecyclerView: RecyclerView
     private lateinit var mViewModelMain: ViewModelMain
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupRecyclerView()
         mViewModelMain = ViewModelProvider(this).get(ViewModelMain::class.java)
         mViewModelMain.items.observe(this, Observer {
             Log.i(TAG, it.toString())
+            (mRecyclerView.adapter as CountryAdapter).submitLit(it)
         })
-//        val service = CountryApi.countryService()
-//        val response = service.listCall()
-//
-//        response.enqueue(object : Callback<CountryResponse> {
-//            override fun onResponse(
-//                call: Call<CountryResponse>,
-//                response: Response<CountryResponse>
-//            ) {
-//                Log.i(TAG, "Message: ${response.message()} Status: ${response.code()}")
-//                findViewById<TextView>(R.id.tvMessage).text =  "Message: ${response.message()} Status: ${response.code()}"
-//                response.body()?.forEach {
-//                    Log.i(TAG, "Message: ${it.name}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CountryResponse>, t: Throwable) {
-//                Log.i(TAG, "Message: ${t.message} Status: ${call.toString()}")
-//            }
-//
-//        })
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val defer = service.listResponse()
-//            val itens = defer
-//            Log.i(TAG, "Items: ${itens.size}")
-//            withContext(Dispatchers.Main) {
-//                findViewById<TextView>(R.id.tvMessage).text =  "Message: ${itens.first().name}"
-//            }
-//
-//        }
 
+
+    }
+
+    private fun setupRecyclerView() {
+        mRecyclerView = findViewById(R.id.countryRecyclerView)
+        mRecyclerView.apply{
+            adapter = CountryAdapter() { position ->
+                Log.i(TAG, "Position: $position")
+            }
+            setHasFixedSize(true)
+            addItemDecoration(DividerItemDecoration(baseContext, DividerItemDecoration.VERTICAL))
+        }
     }
 }

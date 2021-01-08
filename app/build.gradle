@@ -37,6 +37,7 @@ dependencies {
 
     //Lifecycle componenets for viewmodel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'com.google.android.material:material:1.0.0'
 //    //noinspection LifecycleAnnotationProcessorWithJava8
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -50,9 +51,15 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-//    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
     implementation "io.github.serpro69:kotlin-faker:$faker_version"
+    //SVG File Converter
+    implementation "com.caverock:androidsvg-aar:$svg_version"
+
+    //Apache common.io
+    implementation "commons-io:commons-io:$apacheio_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

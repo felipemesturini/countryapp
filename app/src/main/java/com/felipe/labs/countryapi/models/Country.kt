@@ -1,5 +1,6 @@
 package com.felipe.labs.countryapi.models
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,4 +12,9 @@ data class Country(
     val capital: String,
     val imagem: String,
     val population: Long
-)
+) {
+    fun imageUri(): Uri? {
+        return Uri.parse(imagem)
+    }
+
+}
