@@ -19,15 +19,6 @@ object ImageSvg {
     private val mClient = OkHttpClient()
 
     fun loadUrlIntoImageView(url: String, imageView: ImageView) {
-        val cacheBitmap =
-            loadBitmap(imageView.context.filesDir.path, FilenameUtils.getName(url))
-
-        if (cacheBitmap != null) {
-//            withContext(Dispatchers.Main) {
-            imageView.setImageBitmap(cacheBitmap)
-//            }
-        }
-
         val request = Request.Builder()
             .url(url)
             .build()
@@ -47,17 +38,16 @@ object ImageSvg {
                         FilenameUtils.getName(url),
                         svg
                     )
-                    imageView.context.filesDir
                     val pic = SVG.getFromString(svg).renderToPicture()
                     val pd = PictureDrawable(pic)
-                    val imageWidth = Math.min(imageView.width, pd.intrinsicWidth)
-                    var imageHeight = Math.min(imageView.height, pd.intrinsicHeight)
-                    if (imageWidth < pd.intrinsicWidth) {
-                        val ratio = imageWidth.toFloat() / pd.intrinsicWidth.toFloat()
-                        val newWight = pd.intrinsicHeight.toFloat() * ratio
-                        imageHeight = newWight.toInt()
-                    }
-                    Log.i("Image", "W: $imageWidth  H: $imageHeight")
+//                    val imageWidth = Math.min(imageView.width, pd.intrinsicWidth)
+//                    var imageHeight = Math.min(imageView.height, pd.intrinsicHeight)
+//                    if (imageWidth < pd.intrinsicWidth) {
+//                        val ratio = imageWidth.toFloat() / pd.intrinsicWidth.toFloat()
+//                        val newWight = pd.intrinsicHeight.toFloat() * ratio
+//                        imageHeight = newWight.toInt()
+//                    }
+//                    Log.i("Image", "W: $imageWidth  H: $imageHeight")
                     val bitmap = Bitmap.createBitmap(
                         pd.intrinsicWidth,
                         pd.intrinsicHeight,
@@ -72,6 +62,25 @@ object ImageSvg {
             }
 
         })
+    }
+
+    fun loadLocalIntoImageView(fileName: String, imageView: ImageView) {
+        val cacheBitmap =
+            loadBitmap(imageView.context.filesDir.path, fileName)
+
+        if (cacheBitmap != null) {
+            imageView.setImageBitmap(cacheBitmap)
+        }
+    }
+
+    fun loadIntoImage(resource: String, imageView: ImageView) {
+        imageView.setImageBitmap(null)
+
+        val fileName = FilenameUtils.getName(resource)
+        if (existLocalImage(imageView.context.filesDir.path, fileName))
+            loadLocalIntoImageView(fileName, imageView)
+        else
+            loadUrlIntoImageView(resource, imageView)
     }
 
     fun saveBitmap(baseDir: String, fileName: String, bitmap: Bitmap) {
@@ -101,8 +110,7 @@ object ImageSvg {
         if (!fl.exists()) {
             return null
         }
-        val lastUpdate = fl.lastModified()
-        
+
         val fw = FileReader(fullName)
         val svg = fw.readText()
 
@@ -135,4 +143,15 @@ object ImageSvg {
         thread.join()
     }
 
+    private fun existLocalImage(baseDir: String, fileName: String): Boolean {
+        val sp = File.separatorChar
+        val directory = baseDir + sp + "flags"
+        val fullName = directory + sp + fileName
+        val fl = File(fullName)
+        if (!fl.exists()) {
+            return false
+        }
+        return true
+
+    }
 }

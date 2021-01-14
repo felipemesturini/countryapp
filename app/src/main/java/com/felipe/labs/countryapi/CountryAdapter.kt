@@ -25,7 +25,8 @@ class CountryAdapter(private val event: (Int) -> Unit): RecyclerView.Adapter<Cou
             nome.text = "Name: ${item.name}"
             capital.text = "Capital: ${item.capital}"
             populacao.text = "Poulacao: ${item.population}"
-            ImageSvg.loadUrlIntoImageView(item.imageUri().toString(), flag)
+//            ImageSvg.loadUrlIntoImageView(item.imageUri().toString(), flag)
+            ImageSvg.loadIntoImage(item.imageUri().toString(), flag)
         }
 
         init {

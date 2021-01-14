@@ -14,4 +14,7 @@ interface CountryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(items: List<Country>)
+
+    @Query("delete from tb_countries")
+    fun clear()
 }

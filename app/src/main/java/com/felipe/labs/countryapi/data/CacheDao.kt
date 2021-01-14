@@ -14,4 +14,7 @@ interface CacheDao {
 
     @Query(value = "select * from tb_cache where id = $CURRENT_CACHE_ID")
     fun get(): Cache?
+
+    @Query(value = "delete from tb_cache")
+    fun clear()
 }

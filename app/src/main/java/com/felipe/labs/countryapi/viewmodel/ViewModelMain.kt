@@ -11,9 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ViewModelMain(app: Application): AndroidViewModel(app) {
-    private val mRepository = CountryRepository(DbCountry(getApplication()))
+    private val _repository = CountryRepository(DbCountry(getApplication()))
+
     val items: LiveData<List<Country>>
-        get() = this.mRepository.countries
+        get() = this._repository.countries
 
     init {
 //        val db = DbCountry.getInstance(getApplication(), viewModelScope)
@@ -23,10 +24,13 @@ class ViewModelMain(app: Application): AndroidViewModel(app) {
 
     private fun fetchData() {
         viewModelScope.launch {
-            mRepository.fetchData()
+            _repository.fetchData()
         }
-
     }
 
-
+    fun refreshData() {
+        viewModelScope.launch {
+            _repository.clearData()
+        }
+    }
 }

@@ -3,21 +3,13 @@ package com.felipe.labs.countryapi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.felipe.labs.countryapi.viewmodel.ViewModelMain
-import com.felipe.labs.countryapi.web.CountryResponse
-import com.felipe.labs.countryapi.ws.CountryApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
@@ -34,7 +26,12 @@ class MainActivity : AppCompatActivity() {
             (mRecyclerView.adapter as CountryAdapter).submitLit(it)
         })
 
+        findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener(object: View.OnClickListener {
+            override fun onClick(p0: View?) {
+                mViewModelMain.refreshData()
+            }
 
+        })
     }
 
     private fun setupRecyclerView() {
@@ -47,4 +44,5 @@ class MainActivity : AppCompatActivity() {
             addItemDecoration(DividerItemDecoration(baseContext, DividerItemDecoration.VERTICAL))
         }
     }
+
 }
