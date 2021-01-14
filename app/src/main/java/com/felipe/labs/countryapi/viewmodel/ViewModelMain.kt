@@ -9,9 +9,10 @@ import com.felipe.labs.countryapi.models.Country
 import com.felipe.labs.countryapi.repository.CountryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 class ViewModelMain(app: Application): AndroidViewModel(app) {
-    private val _repository = CountryRepository(DbCountry(getApplication()))
+    private val _repository = CountryRepository(app)
 
     val items: LiveData<List<Country>>
         get() = this._repository.countries
